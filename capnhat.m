@@ -1,0 +1,3 @@
+function capnhat(x)
+    
+end

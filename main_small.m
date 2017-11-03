@@ -1,7 +1,7 @@
 clear all
 clc
 clear
-basemva = 200;
+basemva = 100;
 accuracy = 0.0001; accel = 1.8; maxiter =100 ;
 %Bus Bus  Voltage Angle        ---Load----  -------Generator-----   Static Mvar
 %         1   2     3    4       5     6      7     8    9     10        11   

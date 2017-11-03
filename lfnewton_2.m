@@ -5,7 +5,7 @@
     kb=[];Vm=[]; delta=[]; Pd=[]; Qd=[]; Pg=[]; Qg=[]; Qmin=[]; Qmax=[];  % Added (6-8-00)
     Pk=[]; P=[]; Qk=[]; Q=[]; S=[]; V=[]; % Added (6-8-00)
     %hieu chinh ra don vi tuong doi%
-    for k=1:nbus%7*%
+    for k=1:nbus -%
         n=busdata(k,1);
         kb(n)=busdata(k,2); Vm(n)=busdata(k,3); delta(n)=busdata(k, 4);
         Pd(n)=busdata(k,5); Qd(n)=busdata(k,6); Pg(n)=busdata(k,7); Qg(n) = busdata(k,8);
@@ -58,9 +58,6 @@
         % ====================ket thuc khoi tao
         iter = iter+1;
         for n=1:nbus
-           %them
-
-            %kthuc
             nn=n-nss(n);
             lm=nbus+n-ngs(n)-nss(n)-ns;
             J11=0; J22=0; J33=0; J44=0;%xoa tat ca cac phan tu duong cheo
@@ -86,7 +83,7 @@
                                 A(lm, ll) =-Vm(n)*Vm(l)*Ym(n,l)*cos(t(n,l)- delta(n)+delta(l)); end
                             if kb(n) == 0 && kb(l) == 0  % off diagonal elements of  J4
                                 A(lm, lk) =-Vm(n)*Ym(n,l)*sin(t(n,l)- delta(n) + delta(l));end
-                        else,end %Edit here
+                        else,end
                     else , end
                 else, end
             end
@@ -94,9 +91,9 @@
             Qk = -Vm(n)^2*Ym(n,n)*sin(t(n,n))-J11;
             if kb(n) == 1
                 P(n)=Pk; Q(n) = Qk; end   % Swing bus P
-           %============Xu li phan code tai lo?i nut so 2===============%
+           %============Xu li phan code tai loai nut so 2===============%
             if kb(n) == 2
-                Q(n)=Qk;,
+                Q(n)=Qk;
                 if Qmax(n) ~= 0
                     Qgc = Q(n)*basemva + Qd(n) - Qsh(n);
                     if iter <= 7
