@@ -5,8 +5,7 @@ ns=0; ng=0; Vm=0; delta=0; yload=0; deltad=0;
 nbus = length(busdata(:,1));
 kb=[];Vm=[]; delta=[]; Pd=[]; Qd=[]; Pg=[]; Qg=[]; Qmin=[]; Qmax=[];  % Added (6-8-00)
 Pk=[]; P=[]; Qk=[]; Q=[]; S=[]; V=[]; % Added (6-8-00)
-%hieu chinh ra don vi tuong doi%
-for k=1:nbus%7*%
+for k=1:nbus
 n=busdata(k,1);
 kb(n)=busdata(k,2); Vm(n)=busdata(k,3); delta(n)=busdata(k, 4);
 Pd(n)=busdata(k,5); Qd(n)=busdata(k,6); Pg(n)=busdata(k,7); Qg(n) = busdata(k,8);
@@ -14,15 +13,13 @@ Qmin(n)=busdata(k, 9); Qmax(n)=busdata(k, 10);
 Qsh(n)=busdata(k, 11);
     if Vm(n) <= 0  
         Vm(n) = 1.0; V(n) = 1 + j*0;
-    else delta(n) = pi/180*delta(n);% change to radian
+    else delta(n) = pi/180*delta(n);
          V(n) = Vm(n)*(cos(delta(n)) + j*sin(delta(n)));
-         P(n)=(Pg(n)-Pd(n))/basemva;          %chuyen ve don vi tuong doi
-         Q(n)=(Qg(n)-Qd(n)+ Qsh(n))/basemva;  %dvtd
-         S(n) = P(n) + j*Q(n);                %dvtd
+         P(n)=(Pg(n)-Pd(n))/basemva;
+         Q(n)=(Qg(n)-Qd(n)+ Qsh(n))/basemva;
+         S(n) = P(n) + j*Q(n);
     end
 end
-%dieu chinh loai nut, tinh so nut nguon khong thay doi và nut nguon thay
-%doi
 for k=1:nbus
 if kb(k) == 1, ns = ns+1; else, end
 if kb(k) == 2 
@@ -30,38 +27,35 @@ if kb(k) == 2
 ngs(k) = ng;
 nss(k) = ns;
 end
-
 Ym=abs(Ybus); t = angle(Ybus);
-m=2*nbus-ng-2*ns;%why?
+m=2*nbus-ng-2*ns;
 maxerror = 1; converge=1;
 iter = 0;
 %%%% added for parallel lines (Aug. 99)
 mline=ones(nbr,1);
 for k=1:nbr
-      for mn=k+1:nbr %what is m 
-         if((nl(k)==nl(mn)) && (nr(k)==nr(mn)));
-            mline(mn)=2;
-         elseif ((nl(k)==nr(mn)) && (nr(k)==nl(mn)));
-         mline(mn)=2;
+      for m=k+1:nbr
+         if((nl(k)==nl(m)) && (nr(k)==nr(m)));
+            mline(m)=2;
+         elseif ((nl(k)==nr(m)) && (nr(k)==nl(m)));
+         mline(m)=2;
          else, end
       end
-end
+   end
 %%%   end of statements for parallel lines (Aug. 99)   
 
-% Start of iterations - bat dau vong lap
+% Start of iterations
 clear A  DC   J  DX
 while maxerror >= accuracy && iter <= maxiter % Test for max. power mismatch
-% khoi tao ma tran Jacobi=========
-    for ii=1:m
+for ii=1:m
 for k=1:m
-   A(ii,k)=0;      %Initializing Jacobian matrix 
+   A(ii,k)=0;      %Initializing Jacobian matrix
 end, end
-% ====================ket thuc khoi tao
 iter = iter+1;
 for n=1:nbus
 nn=n-nss(n);
 lm=nbus+n-ngs(n)-nss(n)-ns;
-J11=0; J22=0; J33=0; J44=0;%xoa tat ca cac phan tu duong cheo
+J11=0; J22=0; J33=0; J44=0;
    for ii=1:nbr
    	if mline(ii)==1   % Added to include parallel lines (Aug. 99)
       	if nl(ii) == n || nr(ii) == n
@@ -84,7 +78,7 @@ J11=0; J22=0; J33=0; J44=0;%xoa tat ca cac phan tu duong cheo
               		A(lm, ll) =-Vm(n)*Vm(l)*Ym(n,l)*cos(t(n,l)- delta(n)+delta(l)); end
               		if kb(n) == 0 && kb(l) == 0  % off diagonal elements of  J4
               		A(lm, lk) =-Vm(n)*Ym(n,l)*sin(t(n,l)- delta(n) + delta(l));end
-                else,end %Edit here
+        	   else end
      		else , end
       else, end   
    end
@@ -99,7 +93,7 @@ J11=0; J22=0; J33=0; J44=0;%xoa tat ca cac phan tu duong cheo
            if iter <= 7                  % Between the 2th & 6th iterations
               if iter > 2                % the Mvar of generator buses are
                 if Qgc  < Qmin(n),       % tested. If not within limits Vm(n)
-                Vm(n) = Vm(n) + 0.01     % is changed in steps of 0.01 pu to
+                Vm(n) = Vm(n) + 0.01;    % is changed in steps of 0.01 pu to
                 elseif Qgc  > Qmax(n),   % bring the generator Mvar within
                 Vm(n) = Vm(n) - 0.01;end % the specified limits.
               else, end

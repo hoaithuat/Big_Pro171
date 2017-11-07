@@ -22,6 +22,6 @@ linedata=[1   2   0.005       0.005     0          1
           5   6   0.003       0.04      0          1];    %khoang cach moi node la 35m
           
 lfybus
-lfnewton_2
+lfnewton
 busout
 lineflow

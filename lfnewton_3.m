@@ -1,6 +1,8 @@
-%   Power flow solution by Newton-Raphson method
-%   Copyright (c) 1998-2010 by  H. Saadat
-%   Revision 1 (Aug. 99) To include two or more parallel lines
+%=========================================================%
+% Code lineflow newton Rapson method adjust at Qgc of node 
+% When Qgc > Qmax => Qgc=Qmax
+% When Qgc<Qmin => Qgc=Qmin
+%----------------------------------------------------------%
 ns=0; ng=0; Vm=0; delta=0; yload=0; deltad=0;
 nbus = length(busdata(:,1));
 kb=[];Vm=[]; delta=[]; Pd=[]; Qd=[]; Pg=[]; Qg=[]; Qmin=[]; Qmax=[];  % Added (6-8-00)
@@ -90,6 +92,8 @@ J11=0; J22=0; J33=0; J44=0;%xoa tat ca cac phan tu duong cheo
    end
    Pk = Vm(n)^2*Ym(n,n)*cos(t(n,n))+J33;
    Qk = -Vm(n)^2*Ym(n,n)*sin(t(n,n))-J11;
+%==================================================%
+%=============== Edit here ====================================
    if kb(n) == 1 
        P(n)=Pk; Q(n) = Qk; end   % Swing bus P
      if kb(n) == 2  
@@ -98,14 +102,16 @@ J11=0; J22=0; J33=0; J44=0;%xoa tat ca cac phan tu duong cheo
            Qgc = Q(n)*basemva + Qd(n) - Qsh(n);
            if iter <= 7                  % Between the 2th & 6th iterations
               if iter > 2                % the Mvar of generator buses are
-                if Qgc  < Qmin(n),       % tested. If not within limits Vm(n)
-                Vm(n) = Vm(n) + 0.01     % is changed in steps of 0.01 pu to
+                if Qgc  < Qmin(n)       % tested. If not within limits Vm(n)
+                    Qgc=Qmin(n);     % is changed in steps of 0.01 pu to
                 elseif Qgc  > Qmax(n),   % bring the generator Mvar within
-                Vm(n) = Vm(n) - 0.01;end % the specified limits.
+                    Qgc=Qmax(n);end % the specified limits.
               else, end
            else,end
          else,end
      end
+%===========================================================
+%============ End Edit =====================================
    if kb(n) ~= 1
      A(nn,nn) = J11;  %diagonal elements of J1
      DC(nn) = P(n)-Pk;
