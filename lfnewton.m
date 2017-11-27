@@ -1,3 +1,4 @@
+%Oriinal
 %   Power flow solution by Newton-Raphson method
 %   Copyright (c) 1998-2010 by  H. Saadat
 %   Revision 1 (Aug. 99) To include two or more parallel lines
@@ -99,7 +100,7 @@ J11=0; J22=0; J33=0; J44=0;%xoa tat ca cac phan tu duong cheo
            if iter <= 7                  % Between the 2th & 6th iterations
               if iter > 2                % the Mvar of generator buses are
                 if Qgc  < Qmin(n),       % tested. If not within limits Vm(n)
-                Vm(n) = Vm(n) + 0.01     % is changed in steps of 0.01 pu to
+                Vm(n) = Vm(n) + 0.01;     % is changed in steps of 0.01 pu to
                 elseif Qgc  > Qmax(n),   % bring the generator Mvar within
                 Vm(n) = Vm(n) - 0.01;end % the specified limits.
               else, end

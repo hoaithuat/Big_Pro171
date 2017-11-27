@@ -69,13 +69,13 @@ J11=0; J22=0; J33=0; J44=0;%xoa tat ca cac phan tu duong cheo
       	if nl(ii) == n || nr(ii) == n
          	if nl(ii) == n ,  l = nr(ii); end
          	if nr(ii) == n , l = nl(ii); end
-         J11=J11+ Vm(n)*Vm(l)*Ym(n,l)*sin(t(n,l)- delta(n) + delta(l));
-         J33=J33+ Vm(n)*Vm(l)*Ym(n,l)*cos(t(n,l)- delta(n) + delta(l));
-        		if kb(n)~=1
-        		J22=J22+ Vm(l)*Ym(n,l)*cos(t(n,l)- delta(n) + delta(l));
-        		J44=J44+ Vm(l)*Ym(n,l)*sin(t(n,l)- delta(n) + delta(l));
-        		else, end
-        		if kb(n) ~= 1  && kb(l) ~=1
+            J11=J11+ Vm(n)*Vm(l)*Ym(n,l)*sin(t(n,l)- delta(n) + delta(l));
+            J33=J33+ Vm(n)*Vm(l)*Ym(n,l)*cos(t(n,l)- delta(n) + delta(l));
+            if kb(n)~=1
+                J22=J22+ Vm(l)*Ym(n,l)*cos(t(n,l)- delta(n) + delta(l));
+                J44=J44+ Vm(l)*Ym(n,l)*sin(t(n,l)- delta(n) + delta(l));
+        	else, end
+            if kb(n) ~= 1  && kb(l) ~=1
         			lk = nbus+l-ngs(l)-nss(l)-ns;
         			ll = l -nss(l);
       			% off diagonalelements of J1
