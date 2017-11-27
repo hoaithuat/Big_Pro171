@@ -111,7 +111,7 @@ end
                                 %busdata(n,10)=0;
                                 Q(n)=Qmin(n)/basemva;
                                 %Cap nhat cac loia nut
-                                ktra=1;
+                                update1;
                             elseif Qgc  > Qmax(n)   % bring the generator Mvar within
                                 %Vm(n) = Vm(n) - 0.01;end % the specified limits.
                                 busdata(n,6)=busdata(n,6)+busdata(n,8);
@@ -120,7 +120,7 @@ end
                                 %busdata(n,9)=0;
                                 %busdata(n,10)=0;
                                 Q(n)=Qmax(n)/basemva;
-                                ktra=1;
+                                update1;
                             end
                         else, end
                     else,end
@@ -138,6 +138,53 @@ end
                 DC(lmn) = Q(n)-Qk;
             end
         end
+        %========= Check again
+        for n=1:nbus
+            nn=n-nss(n);
+            lmn=nbus+n-ngs(n)-nss(n)-ns;
+            J11=0; J22=0; J33=0; J44=0;%xoa tat ca cac phan tu duong cheo
+            for ii=1:nbr
+                if mline(ii)==1   % Added to include parallel lines (Aug. 99)
+                    if nl(ii) == n || nr(ii) == n
+                        if nl(ii) == n ,  l = nr(ii); end
+                        if nr(ii) == n , l = nl(ii); end
+                        J11=J11+ Vm(n)*Vm(l)*Ym(n,l)*sin(t(n,l)- delta(n) + delta(l));
+                        J33=J33+ Vm(n)*Vm(l)*Ym(n,l)*cos(t(n,l)- delta(n) + delta(l));
+                        if kb(n)~=1
+                            J22=J22+ Vm(l)*Ym(n,l)*cos(t(n,l)- delta(n) + delta(l));
+                            J44=J44+ Vm(l)*Ym(n,l)*sin(t(n,l)- delta(n) + delta(l));
+                        else, end
+                        if kb(n) ~= 1  && kb(l) ~=1
+                            lk = nbus+l-ngs(l)-nss(l)-ns;
+                            ll = l -nss(l);
+                            % off diagonalelements of J1
+                            A(nn, ll) =-Vm(n)*Vm(l)*Ym(n,l)*sin(t(n,l)- delta(n) + delta(l));
+                            if kb(l) == 0  % off diagonal elements of J2
+                                A(nn, lk) =Vm(n)*Ym(n,l)*cos(t(n,l)- delta(n) + delta(l));end
+                            if kb(n) == 0  % off diagonal elements of J3
+                                A(lmn, ll) =-Vm(n)*Vm(l)*Ym(n,l)*cos(t(n,l)- delta(n)+delta(l)); end
+                            if kb(n) == 0 && kb(l) == 0  % off diagonal elements of  J4
+                                A(lmn, lk) =-Vm(n)*Ym(n,l)*sin(t(n,l)- delta(n) + delta(l));end
+                        else,end
+                    else , end
+                else, end
+            end
+            Pk = Vm(n)^2*Ym(n,n)*cos(t(n,n))+J33;
+            Qk = -Vm(n)^2*Ym(n,n)*sin(t(n,n))-J11;
+            if kb(n) == 1
+                P(n)=Pk; Q(n) = Qk; end   % Swing bus P
+            if kb(n) ~= 1
+                A(nn,nn) = J11;  %diagonal elements of J1
+                DC(nn) = P(n)-Pk;
+            end
+            if kb(n) == 0
+                A(nn,lmn) = 2*Vm(n)*Ym(n,n)*cos(t(n,n))+J22;  %diagonal elements of J2
+                A(lmn,nn)= J33;        %diagonal elements of J3
+                A(lmn,lmn) =-2*Vm(n)*Ym(n,n)*sin(t(n,n))-J44;  %diagonal of elements of J4
+                DC(lmn) = Q(n)-Qk;
+            end
+        end        
+        %============end check
         DX=A\DC';
         for n=1:nbus
             nn=n-nss(n);

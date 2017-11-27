@@ -5,14 +5,11 @@ for k=1:nbus %
     Pd(n)=busdata(k,5); Qd(n)=busdata(k,6); Pg(n)=busdata(k,7); Qg(n) = busdata(k,8);
     Qmin(n)=busdata(k,9); Qmax(n)=busdata(k,10);
     Qsh(n)=busdata(k,11);
-    if Vm(n) <= 0
-        Vm(n) = 1.0; V(n) = 1 + j*0;
-    else delta(n) = pi/180*delta(n);% change to radian
-        V(n) = Vm(n)*(cos(delta(n)) + j*sin(delta(n)));
-        P(n)=(Pg(n)-Pd(n))/basemva;          %chuyen ve don vi tuong doi
-        Q(n)=(Qg(n)-Qd(n)+ Qsh(n))/basemva;  %dvtd
-        S(n) = P(n) + j*Q(n);                %dvtd
-    end
+    delta(n) = pi/180*delta(n);% change to radian
+    V(n) = Vm(n)*(cos(delta(n)) + j*sin(delta(n)));
+    P(n)=(Pg(n)-Pd(n))/basemva;          %chuyen ve don vi tuong doi
+    Q(n)=(Qg(n)-Qd(n)+ Qsh(n))/basemva;  %dvtd
+    S(n) = P(n) + j*Q(n);                %dvtd
 end
     %dieu chinh loai nut, tinh so nut nguon khong thay doi và nut nguon thay
     %doi
