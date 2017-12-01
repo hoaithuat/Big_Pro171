@@ -14,13 +14,13 @@ end
     %dieu chinh loai nut, tinh so nut nguon khong thay doi và nut nguon thay
     %doi
     ng=0; ns=0;
-            for k=1:nbus
-                if kb(k) == 1, ns = ns+1; else, end
-                if kb(k) == 2
-                ng = ng+1; else, end
-                ngs(k) = ng;
-                nss(k) = ns;
-            end
+for k=1:nbus
+    if kb(k) == 1, ns = ns+1; else, end
+    if kb(k) == 2
+    ng = ng+1; else, end
+    ngs(k) = ng;
+    nss(k) = ns;
+end
             
 %ket thuc tinh cac loia nut%
-    m=2*nbus-ng-2*ns;%why?
+    m=2*nbus-ng-2*ns

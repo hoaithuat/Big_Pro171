@@ -34,7 +34,7 @@ for k=1:nbus
 end
             
 %ket thuc tinh cac loia nut%
-    m=2*nbus-ng-2*ns;%why?
+    m=2*nbus-ng-2*ns;
     maxerror = 1; converge=1;
     iter = 0;
     %%%% added for parallel lines (Aug. 99)
@@ -111,7 +111,6 @@ end
                                 %busdata(n,10)=0;
                                 Q(n)=Qmin(n)/basemva;
                                 %Cap nhat cac loia nut
-                                update1;
                             elseif Qgc  > Qmax(n)   % bring the generator Mvar within
                                 %Vm(n) = Vm(n) - 0.01;end % the specified limits.
                                 busdata(n,6)=busdata(n,6)+busdata(n,8);
@@ -120,7 +119,6 @@ end
                                 %busdata(n,9)=0;
                                 %busdata(n,10)=0;
                                 Q(n)=Qmax(n)/basemva;
-                                update1;
                             end
                         else, end
                     else,end
@@ -139,6 +137,7 @@ end
             end
         end
         %========= Check again
+        update1
         for n=1:nbus
             nn=n-nss(n);
             lmn=nbus+n-ngs(n)-nss(n)-ns;
@@ -169,6 +168,7 @@ end
                     else , end
                 else, end
             end
+        end
             Pk = Vm(n)^2*Ym(n,n)*cos(t(n,n))+J33;
             Qk = -Vm(n)^2*Ym(n,n)*sin(t(n,n))-J11;
             if kb(n) == 1
@@ -201,7 +201,6 @@ end
             fprintf('Press Enter to terminate the iterations and print the results \n')
             converge = 0; pause, else, end
 
-    end
     if converge ~= 1
         tech= ('                      ITERATIVE SOLUTION DID NOT CONVERGE'); else,
         tech=('                   Power Flow Solution by Newton-Raphson Method');
