@@ -1,5 +1,5 @@
 % Cap nhat cac thong so 
-for k=1:nbus %
+for k=1:nbus
     n=busdata(k,1);
     kb(n)=busdata(k,2); Vm(n)=busdata(k,3); delta(n)=busdata(k,4);
     Pd(n)=busdata(k,5); Qd(n)=busdata(k,6); Pg(n)=busdata(k,7); Qg(n) = busdata(k,8);
@@ -23,4 +23,4 @@ for k=1:nbus
 end
             
 %ket thuc tinh cac loia nut%
-    m=2*nbus-ng-2*ns
+    m=2*nbus-ng-2*ns;

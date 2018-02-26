@@ -3,7 +3,7 @@ clear all
 clc
 clear
 basemva = 100;
-accuracy = 0.00001; accel = 1.8; maxiter = 100 ;
+accuracy = 0.001; accel = 1.8; maxiter = 6;
 %                   PHAN NHAP SO LIEU NUT VA THONG SO DUONG DAY
 %        IEEE 30-BUS TEST SYSTEM (American Electric Power)
 %        Bus Bus  Voltage Angle   ---Load----  -------Generator-----   Static Mvar
@@ -20,6 +20,6 @@ linedata=[1   2   0.02        0.04      0          1
           2   3   0.01        0.03      0          1
           3   4   0.0125      0.025     0          1];
 lfybus
-lfnewton_2 
+lfnewton_2
 busout
 lineflow

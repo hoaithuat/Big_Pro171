@@ -99,9 +99,7 @@ end
             if kb(n) == 2
                 Q(n)=Qk;
                 if Qmax(n) ~= 0
-                    Qgc = Q(n)*basemva + Qd(n) - Qsh(n);
-                    if iter <= 10
-                        if iter > 2
+                            Qgc = Q(n)*basemva + Qd(n) - Qsh(n);
                             if Qgc  < Qmin(n)
                                 %Vm(n) = Vm(n) + 0.01
                                 busdata(n,6)=busdata(n,6)+busdata(n,8);%neu thay doi loai nut tai
@@ -109,7 +107,9 @@ end
                                 busdata(n,2)=0;                   %nen khong the dun phuong phap nay%
                                 %busdata(n,9)=0;
                                 %busdata(n,10)=0;
+                                
                                 Q(n)=Qmin(n)/basemva;
+                                Qk=Q(n);
                                 %Cap nhat cac loia nut
                             elseif Qgc  > Qmax(n)   % bring the generator Mvar within
                                 %Vm(n) = Vm(n) - 0.01;end % the specified limits.
@@ -119,10 +119,9 @@ end
                                 %busdata(n,9)=0;
                                 %busdata(n,10)=0;
                                 Q(n)=Qmax(n)/basemva;
-                            end
-                        else, end
-                    else,end
-                else,end
+                                Qk=Q(n);
+                            else,end
+                  else,end
             end
             %=====================Ket thuc xu ly ========================%
             if kb(n) ~= 1
@@ -183,9 +182,10 @@ end
                 A(lmn,lmn) =-2*Vm(n)*Ym(n,n)*sin(t(n,n))-J44;  %diagonal of elements of J4
                 DC(lmn) = Q(n)-Qk;
             end
+            DC
         end        
         %============end check
-        DX=A\DC';
+        DX=A\DC'
         for n=1:nbus
             nn=n-nss(n);
             lm=nbus+n-ngs(n)-nss(n)-ns;
